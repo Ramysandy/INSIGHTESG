@@ -1,11 +1,14 @@
+import os
 from flask import Flask, render_template, request
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import requests
 from bs4 import BeautifulSoup
+import nltk
+nltk.download('vader_lexicon')
 
 app = Flask(__name__)
-
+server = app.server
 # Load your CSV file containing sentiment data (data.csv)
 data_df = pd.read_csv("data.csv")  # Update with the actual path to your CSV file
 
