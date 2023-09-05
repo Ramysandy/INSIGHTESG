@@ -1,16 +1,11 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import requests
 from bs4 import BeautifulSoup
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
 
-server = Flask(__name__)
-app = dash.Dash(__name__, server=server)
+app = Flask(__name__)
 
 # Load your CSV file containing sentiment data (data.csv)
 data_df = pd.read_csv("data.csv")  # Update with the actual path to your CSV file
@@ -18,20 +13,11 @@ data_df = pd.read_csv("data.csv")  # Update with the actual path to your CSV fil
 # Initialize the VADER sentiment analyzer
 sia = SentimentIntensityAnalyzer()
 
-app.layout = html.Div([
-    html.H1("Sentiment Analysis Dashboard"),
-    dcc.Textarea(id='input_text', placeholder="Enter text or URL"),
-    html.Button("Analyze Sentiment", id='analyze_button'),
-    html.Div(id='sentiment_results')
-])
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        input_text = request.form.get("input_text")
 
-@app.callback(
-    Output('sentiment_results', 'children'),
-    Input('analyze_button', 'n_clicks'),
-    [dash.dependencies.State('input_text', 'value')]
-)
-def update_sentiment(n_clicks, input_text):
-    if input_text:
         if input_text.startswith("http"):
             # User entered a website link, fetch text content from the URL
             input_text = fetch_text_from_url(input_text)
@@ -39,19 +25,9 @@ def update_sentiment(n_clicks, input_text):
         # Perform sentiment analysis and get sentiment scores here
         sentiment_scores = analyze_sentiment(input_text)
 
-        # Display the sentiment scores
-        return html.Div([
-            html.H3("Sentiment Analysis Results:"),
-            html.P(f"Positive: {sentiment_scores['Positive']}"),
-            html.P(f"Negative: {sentiment_scores['Negative']}"),
-            html.P(f"Neutral: {sentiment_scores['Uncertainty']}"),
-            html.P(f"Litigious: {sentiment_scores['Litigious']}"),
-            html.P(f"Strong Modal: {sentiment_scores['StrongModal']}"),
-            html.P(f"Weak Modal: {sentiment_scores['WeakModal']}"),
-            html.P(f"Overall Sentiment: {sentiment_scores['Sentiment']}"),
-        ])
+        return render_template("results.html", sentiment_scores=sentiment_scores)
 
-    return ""
+    return render_template("index.html")
 
 def fetch_text_from_url(url):
     try:
@@ -107,4 +83,4 @@ def analyze_sentiment(text):
     return sentiment_categories
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
