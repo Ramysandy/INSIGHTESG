@@ -4,6 +4,8 @@ import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import requests
 from bs4 import BeautifulSoup
+import nltk
+nltk.download('vader_lexicon')
 
 app = Flask(__name__)
 
