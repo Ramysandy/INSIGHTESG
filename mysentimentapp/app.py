@@ -8,7 +8,7 @@ import nltk
 nltk.download('vader_lexicon')
 
 app = Flask(__name__)
-
+server = app.server
 # Load your CSV file containing sentiment data (data.csv)
 data_df = pd.read_csv("data.csv")  # Update with the actual path to your CSV file
 
