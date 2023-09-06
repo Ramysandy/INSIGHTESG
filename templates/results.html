@@ -22,53 +22,39 @@
             padding: 20px;
             background-color: #3498db;
             color: #fff;
-            font-size: 24px;
+            font-size: 36px; /* Larger font size for the header */
         }
 
-        /* Style the results container */
-        ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
+        /* Style the results table */
+        table {
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse;
+            width: 80%; /* Make the table larger */
         }
 
-        /* Style individual score cards */
-        li {
+        /* Style table rows */
+        tr {
             background-color: #fff;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 10px;
+        }
+
+        /* Style table cells */
+        td {
             padding: 20px;
-            width: 200px;
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 24px; /* Larger font size for table cells */
         }
 
-        /* Define different colors for different score cards */
-        li:nth-child(1) {
+        /* Define different colors for different rows */
+        tr:nth-child(odd) {
             background-color: #e74c3c; /* Negative */
+            color: #fff;
         }
 
-        li:nth-child(2) {
+        tr:nth-child(even) {
             background-color: #27ae60; /* Positive */
-        }
-
-        li:nth-child(3) {
-            background-color: #f1c40f; /* Uncertainty */
-        }
-
-        li:nth-child(4) {
-            background-color: #9b59b6; /* Litigious */
-        }
-
-        li:nth-child(5) {
-            background-color: #e67e22; /* StrongModal */
-        }
-
-        li:nth-child(6) {
-            background-color: #3498db; /* WeakModal */
+            color: #fff;
         }
 
         /* Style the sentiment paragraph */
@@ -96,6 +82,7 @@
             text-decoration: none;
             color: #3498db;
             font-weight: bold;
+            font-size: 24px; /* Larger font size for the link */
         }
 
         /* Change link color on hover */
@@ -106,15 +93,25 @@
 </head>
 <body>
     <h1>Sentiment Analysis Results</h1>
-    <ul>
-        <li>Negative Score: <span style="font-size: 24px;">{{ sentiment_scores['Negative'] }}</span></li>
-        <li>Positive Score: <span style="font-size: 24px;">{{ sentiment_scores['Positive'] }}</span></li>
-        <li>Uncertainty Score: <span style="font-size: 24px;">{{ sentiment_scores['Uncertainty'] }}</span></li>
-  <!--      <li>Litigious Score: <span style="font-size: 24px;">{{ sentiment_scores['Litigious'] }}</span></li>
-        <li>StrongModal Score: <span style="font-size: 24px;">{{ sentiment_scores['StrongModal'] }}</span></li>
-        <li>WeakModal Score: <span style="font-size: 24px;">{{ sentiment_scores['WeakModal'] }}</span></li>-->
-    </ul>
-    <p>Sentiment: <span style="font-size: 24px;">{{ sentiment_scores['Sentiment'] }}</span></p>
+    <table>
+        <tr>
+            <td>Negative Score:</td>
+            <td><span style="font-size: 36px;">{{ sentiment_scores['Negative'] }}</span></td>
+        </tr>
+        <tr>
+            <td>Positive Score:</td>
+            <td><span style="font-size: 36px;">{{ sentiment_scores['Positive'] }}</span></td>
+        </tr>
+        <tr>
+            <td>Uncertainty Score:</td>
+            <td><span style="font-size: 36px;">{{ sentiment_scores['Uncertainty'] }}</span></td>
+        </tr>
+        <tr>
+            <td>Sentiment:</td>
+            <td> <span style="font-size: 36px;">{{ sentiment_scores['Sentiment'] }}</span></td>
+        </tr>
+    </table>
+   
     <a href="/">Back</a>
 </body>
 </html>
