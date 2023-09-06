@@ -47,42 +47,18 @@ def analyze_sentiment(text):
     # Use VADER sentiment analysis
     sentiment_scores = sia.polarity_scores(text)
 
-    # Define your custom sentiment categories
-    sentiment_categories = {
-        "Negative": sentiment_scores["neg"],
-        "Positive": sentiment_scores["pos"],
-        "Uncertainty": sentiment_scores["neu"],  # Neutral sentiment
-        "Litigious": 0.0,  # Define your own logic for this category
-        "StrongModal": 0.0,  # Define your own logic for this category
-        "WeakModal": 0.0,  # Define your own logic for this category
-    }
-
-    # You can set your own thresholds and logic for the custom categories
-    # Example: Classify as Litigious if compound_score is greater than 0.5
-    if sentiment_scores["compound"] > 0.5:
-        sentiment_categories["Litigious"] = 1.0
-
-    # Example: Classify as StrongModal if compound_score is less than -0.5
-    if sentiment_scores["compound"] < -0.5:
-        sentiment_categories["StrongModal"] = 1.0
-
-    # Example: Classify as WeakModal if compound_score is between -0.5 and 0.5
-    if -0.5 <= sentiment_scores["compound"] <= 0.5:
-        sentiment_categories["WeakModal"] = 1.0
-
-    # Calculate the overall Sentiment based on custom categories
-    if sentiment_categories["Positive"] > sentiment_categories["Negative"]:
+    # Calculate the overall Sentiment based on compound score
+    if sentiment_scores["compound"] >= 0.05:
         sentiment = "Positive"
-    elif sentiment_categories["Negative"] > sentiment_categories["Positive"]:
+    elif sentiment_scores["compound"] <= -0.05:
         sentiment = "Negative"
     else:
         sentiment = "Neutral"
 
     # Add the overall Sentiment to the dictionary
-    sentiment_categories["Sentiment"] = sentiment
+    sentiment_scores["Sentiment"] = sentiment
 
-    # Return the custom sentiment categories including overall Sentiment
-    return sentiment_categories
+    return sentiment_scores
 
 if __name__ == "__main__":
     app.run(debug=True)
